@@ -1,7 +1,7 @@
 const express = require("express")
 
 const { graphqlHTTP } =require("express-graphql");
-const { GraphQLObjectType, GraphQLID, GraphQLString } = require("graphql");
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema } = require("graphql");
 
 const app = express();
 
@@ -25,15 +25,20 @@ const RootQuery = new GraphQLObjectType({
     name:"RootQuery",
     fields:{
        users: {
-        type: GraphaQLList(UserType),
+        type:new GraphaQLList(UserType),
         resolve() {
             return UsersList;
         },
 
        },
     },
-})
+     
+});
 
+const RootQuery = new GraphQLObjectType({
+
+});
+const schema = new GraphQLSchema({query:RootQuery})
 app.use("/graphql",graphqlHTTP({schema:{},graphiql: true}));
 
 app.listen(5000, () => console.log("server Running"));
